@@ -6,7 +6,8 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 //เเก้ตรงนี้
 const int WeightPerBottle = 50; //น้ำหนักต่อขวดน้ำ
 const int countBottle = 10; //เเจ้งเตือนถ้ามีขวดน้ำครบ x ขวด
-const float DetectRange[2] = {8.55,12.2}; // {ระยะตรวจจับเเรก , ระยะยกเลิกการตรวจจับ}
+const float DetectRange[2] = {8.55,14.2}; // {ระยะตรวจจับเเรก , ระยะยกเลิกการตรวจจับ}
+const int delayDetect = 700;
 #define SSID        "Debsirinnon_2.4G" //ชื่อไวไฟ
 #define PASSWORD    "" //รหัสไวไฟ (ไม่มีให้ใส่ "" )
 #define LINE_TOKEN  "NpGK7TRGC5iO8JdjAj7oiPBcQ00YrS81ArCXZWjRnI5" //Line Token
@@ -16,7 +17,7 @@ const float DetectRange[2] = {8.55,12.2}; // {ระยะตรวจจับ�
 const int pingPin = D6;
 const int inPin = D5;
 const int MaxError = 795;
-const int MaxTimeOut = 2e5;
+const int MaxTimeOut = 4e5;
 
 
 
@@ -28,7 +29,7 @@ void updateScreen(){
   lcd.setCursor(0, 0);
   lcd.print("Bottle(s) = "+String(Bottles));
   lcd.setCursor(0, 1);
-  lcd.print("Weight = "+String(Bottles*WaterPerBottle));
+  lcd.print("Weight = "+String(Bottles*WeightPerBottle));
 }
 
 void setup()
@@ -67,7 +68,7 @@ float get_distance(){
   delayMicroseconds(10);
   digitalWrite(pingPin, LOW);
   long duration = pulseIn(inPin, HIGH,MaxTimeOut);
-  float val = duration * 0.034 / 2.0;
+  float val = duration * 0.0344 / 2.0;
   //Serial.println(val);
   if(val>=MaxError)return 0;
   return val;
@@ -94,16 +95,18 @@ bool inRange(){
 void loop(){
   if(inRange()^_CountMode){
     _CountMode = !_CountMode;
-    Serial.println("Update!");
+    // Serial.println("Update!");
+    // Serial.println(get_distance());
     if(_CountMode){
       Bottles++;
       updateScreen();
       if(Bottles%countBottle == 0){
         SendNotify();
-      }
+      } 
     }
+    delay(delayDetect);
   }
 
   
-  delay(100);
+  delay(20);
 }
