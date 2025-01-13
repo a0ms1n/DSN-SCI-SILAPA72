@@ -4,9 +4,9 @@
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 //เเก้ตรงนี้
-const int WeightPerBottle = 50; //น้ำหนักต่อขวดน้ำ
-const int countBottle = 10; //เเจ้งเตือนถ้ามีขวดน้ำครบ x ขวด
-const float DetectRange[2] = {8.55,14.2}; // {ระยะตรวจจับเเรก , ระยะยกเลิกการตรวจจับ}
+const int WeightPerBottle = 15; //น้ำหนักต่อขวดน้ำ
+const int countBottle = 7; //เเจ้งเตือนถ้ามีขวดน้ำครบ x ขวด
+const float DetectRange[2] = {6.55,11}; // {ระยะตรวจจับเเรก , ระยะยกเลิกการตรวจจับ} cm
 const int delayDetect = 700;
 #define SSID        "Debsirinnon_2.4G" //ชื่อไวไฟ
 #define PASSWORD    "" //รหัสไวไฟ (ไม่มีให้ใส่ "" )
